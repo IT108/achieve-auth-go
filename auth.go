@@ -1,7 +1,7 @@
 package main
 
 import (
-	db "../achieve-db-go"
+	db "gopkg.in/IT108/achieve-db-go.v0"
 	models "gopkg.in/IT108/achieve-models-go.v0"
 	"log"
 	"net/http"
@@ -72,7 +72,7 @@ func authenticate(request models.AuthenticateRequest) models.AuthenticateRespons
 	}
 	query := *db.SelectUsers(tarantooolAuthSpace, "primary", request.Username)
 	if len(query) != 0 {
-		if comparePasswords(query[0].PasswordHash, []byte(request.Password))  {
+		if comparePasswords(query[0].PasswordHash, []byte(request.Password)) {
 			return result
 		}
 	}

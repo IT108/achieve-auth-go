@@ -1,14 +1,14 @@
 package main
 
 import (
-	db "../achieve-db-go"
 	broker "gopkg.in/IT108/achieve-broker-go.v0"
+	db "gopkg.in/IT108/achieve-db-go.v0"
 	"log"
 	"os"
 	"os/signal"
 )
 
-func shutdownService()  {
+func shutdownService() {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 
@@ -30,5 +30,6 @@ func main() {
 	broker.AssignRouter(broker.RouterInterface(authRouter))
 	broker.Subscribe([]string{broker.AUTH_TOPIC}, broker.AUTH_TOPIC)
 
-	for {}
+	for {
+	}
 }
