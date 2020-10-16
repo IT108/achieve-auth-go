@@ -1,5 +1,5 @@
-github.com/IT108/achieve-broker-go v0.4.1 h1:5mTKXRu4U1LT9gDBNgriCP24doTq9B5HFyQPehYsKGk=
-github.com/IT108/achieve-broker-go v0.4.1/go.mod h1:o5pLGWbOMBgl4znPhPrNjX3wJP/sGPY8jhoMLqEcM18=
+github.com/IT108/achieve-broker-go v0.6.1 h1:Xjfs9Snak9QkONnV21T9N1Fw+nyQEnPadkB9V8D9z30=
+github.com/IT108/achieve-broker-go v0.6.1/go.mod h1:o5pLGWbOMBgl4znPhPrNjX3wJP/sGPY8jhoMLqEcM18=
 github.com/IT108/achieve-db-go v0.0.0-20201005203109-4dbc60b0d7e3 h1:NEmW+APh9Qgaj2QA4tUjfvdgDT2OM3xRvLQ7I2SxXHc=
 github.com/IT108/achieve-db-go v0.0.0-20201005203109-4dbc60b0d7e3/go.mod h1:7EkhZmZMsbQgneXQ64rYgrbX8umD14jNpLHyL7DkLqk=
 github.com/IT108/achieve-models-go v0.1.4 h1:hZhSZx6udxo1qC4AKO6RfVjtsnAeO3zV5Cj58mwsGj4=
