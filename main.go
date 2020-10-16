@@ -23,6 +23,7 @@ func shutdownService() {
 func main() {
 	shutdownService()
 	db.ConfigureFromEnv()
+	broker.ConfigureFromEnv()
 	db.Init()
 	getConfig()
 	base := broker.RouterBase{}

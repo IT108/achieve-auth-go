@@ -2,8 +2,8 @@ package main
 
 import (
 	"encoding/json"
-	broker "gopkg.in/IT108/achieve-broker-go.v0"
-	models "gopkg.in/IT108/achieve-models-go.v0"
+	broker "github.com/IT108/achieve-broker-go"
+	models "github.com/IT108/achieve-models-go"
 	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
 	"log"
 )

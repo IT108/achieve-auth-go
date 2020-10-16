@@ -7,8 +7,6 @@ ENV GO111MODULE=on \
 
 WORKDIR /go/src/github.com/achieve-auth-go
 COPY . .
-RUN go mod init
-RUN go mod tidy
 
 RUN go get -d -v ./...
 RUN go install -v ./...

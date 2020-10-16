@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	broker "gopkg.in/IT108/achieve-broker-go.v0"
+	broker "github.com/IT108/achieve-broker-go"
 )
 
 func sendAnswer(gateId string, clientId string, ans interface{}) {

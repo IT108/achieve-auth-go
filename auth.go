@@ -1,8 +1,8 @@
 package main
 
 import (
-	db "gopkg.in/IT108/achieve-db-go.v0"
-	models "gopkg.in/IT108/achieve-models-go.v0"
+	db "github.com/IT108/achieve-db-go"
+	models "github.com/IT108/achieve-models-go"
 	"log"
 	"net/http"
 )
