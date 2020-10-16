@@ -1,8 +1,8 @@
 package main
 
 import (
-	broker "gopkg.in/IT108/achieve-broker-go.v0"
-	db "gopkg.in/IT108/achieve-db-go.v0"
+	broker "github.com/IT108/achieve-broker-go"
+	db "github.com/IT108/achieve-db-go"
 	"log"
 	"os"
 	"os/signal"
