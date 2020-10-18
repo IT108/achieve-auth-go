@@ -9,7 +9,7 @@ import (
 
 func register(request models.RegisterRequest) models.RegisterResponse {
 	hashPass := hashAndSalt([]byte(request.Password))
-	result := db.Insert(tarantooolAuthSpace, []interface{}{request.Email, request.Username, hashPass, []string{}, false})
+	result := db.Insert(tarantoolAuthSpace, []interface{}{request.Email, request.Username, hashPass, []string{}, false})
 	response := models.RegisterResponse{
 		Request:      request.Request,
 		ResponseCode: http.StatusOK,
@@ -50,7 +50,7 @@ func isRegistered(request models.IsRegisteredRequest) models.IsRegisteredRespons
 }
 
 func isEmailRegistered(email string) bool {
-	result := db.Select(tarantooolAuthSpace, "primary", email).Data
+	result := db.Select(tarantoolAuthSpace, "primary", email).Data
 	if len(result) != 0 {
 		return true
 	}
@@ -58,7 +58,7 @@ func isEmailRegistered(email string) bool {
 }
 
 func isUsernameRegistered(username string) bool {
-	result := db.Select(tarantooolAuthSpace, "secondary", username).Data
+	result := db.Select(tarantoolAuthSpace, "secondary", username).Data
 	if len(result) != 0 {
 		return true
 	}
@@ -70,13 +70,13 @@ func authenticate(request models.AuthenticateRequest) models.AuthenticateRespons
 		Request:      request.Request,
 		ResponseCode: http.StatusOK,
 	}
-	query := *db.SelectUsers(tarantooolAuthSpace, "primary", request.Username)
+	query := *db.SelectUsers(tarantoolAuthSpace, "primary", request.Username)
 	if len(query) != 0 {
 		if comparePasswords(query[0].PasswordHash, []byte(request.Password)) {
 			return result
 		}
 	}
-	query = *db.SelectUsers(tarantooolAuthSpace, "secondary", request.Username)
+	query = *db.SelectUsers(tarantoolAuthSpace, "secondary", request.Username)
 
 	if len(query) != 0 {
 		if comparePasswords(query[0].PasswordHash, []byte(request.Password)) {
@@ -90,7 +90,7 @@ func authenticate(request models.AuthenticateRequest) models.AuthenticateRespons
 }
 
 func authorize(request models.AuthorizeRequest) models.AuthorizeResponse {
-	query := *db.SelectUsers(tarantooolAuthSpace, "primary", request.User)
+	query := *db.SelectUsers(tarantoolAuthSpace, "primary", request.User)
 	result := models.AuthorizeResponse{
 		Request:      request.Request,
 		ResponseCode: http.StatusOK,

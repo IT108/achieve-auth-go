@@ -11,30 +11,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
-      with:
-        name: it108/achieve-auth-go/achieve-auth-go
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_TOKEN }}
-        registry: docker.pkg.github.com
-        tags: "latest,${{ github.SHA }}"
+      - uses: actions/checkout@master
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: it108/achieve-auth-go/achieve-auth-go
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
+          registry: docker.pkg.github.com
+          tags: "latest,${{ github.SHA }}"
 
   deploy:
     runs-on: whale
     needs: build
     steps:
-    - uses: actions/checkout@master
-    - name: Login to packages
-      run: |
-        echo  ${{ secrets.REGISTRY_TOKEN }} |  docker login docker.pkg.github.com -u ${{ github.ACTOR }} --password-stdin
-    - name: deploy
-      env:
-        TARANTOOL_USER_NAME: ${{ secrets.TARANTOOL_USER_NAME }}
-        TARANTOOL_HOST: ${{ secrets.TARANTOOL_HOST }}
-        TARANTOOL_USER_PASSWORD: ${{ secrets.TARANTOOL_USER_PASSWORD }}
-        BROKER_HOST: ${{ secrets.BROKER_HOST }}
-        BROKER_PORT: ${{ secrets.BROKER_PORT }}
-      run: |
-        docker-compose up -d
+      - uses: actions/checkout@master
+      - name: Login to packages
+        run: |
+          echo  ${{ secrets.REGISTRY_TOKEN }} |  docker login docker.pkg.github.com -u ${{ github.ACTOR }} --password-stdin
+      - name: deploy
+        env:
+          TARANTOOL_USER_NAME: ${{ secrets.TARANTOOL_USER_NAME }}
+          TARANTOOL_HOST: ${{ secrets.TARANTOOL_HOST }}
+          TARANTOOL_USER_PASSWORD: ${{ secrets.TARANTOOL_USER_PASSWORD }}
+          BROKER_HOST: ${{ secrets.BROKER_HOST }}
+          BROKER_PORT: ${{ secrets.BROKER_PORT }}
+        run: |
+          docker-compose up -d

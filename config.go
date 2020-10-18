@@ -5,7 +5,7 @@ import "os"
 var tarantoolUser = "internal"
 var tarantoolHost = "127.0.0.1:3301"
 var tarantoolPassword = ""
-var tarantooolAuthSpace = "auth"
+var tarantoolAuthSpace = "auth"
 
 func getConfig() {
 	set(&tarantoolUser, os.Getenv("tarantool_user"))
