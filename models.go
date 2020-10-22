@@ -2,10 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	methods "github.com/IT108/achieve-auth-go/methods"
 	broker "github.com/IT108/achieve-broker-go"
 	models "github.com/IT108/achieve-models-go"
 	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
-	"log"
 )
 
 type authRouter struct {
@@ -17,40 +17,50 @@ func (receiver *authRouter) RunAction(data *kafka.Message) {
 	switch key {
 	case models.AUTH_REGISTER_KEY:
 		req := models.RegisterRequest{}
+
 		json.Unmarshal(data.Value, &req)
-		answer := register(req)
+		answer := methods.Register(req)
+
 		sendAnswer(answer.GateId, answer.Sender, &answer)
 		break
 	case models.AUTH_AUTHENTICATE_KEY:
 		req := models.AuthenticateRequest{}
+
 		json.Unmarshal(data.Value, &req)
-		answer := authenticate(req)
+		answer := methods.Authenticate(req)
+
 		sendAnswer(answer.GateId, answer.Sender, &answer)
 		break
 	case models.AUTH_AUTHORIZE_KEY:
 		req := models.AuthorizeRequest{}
+
 		json.Unmarshal(data.Value, &req)
-		answer := authorize(req)
+		answer := methods.Authorize(req)
+
 		sendAnswer(answer.GateId, answer.Sender, &answer)
 		break
 	case models.AUTH_IS_EMAIL_REGISTERED_KEY:
 		req := models.IsEmailRegisteredRequest{}
+
 		json.Unmarshal(data.Value, &req)
-		answer := isEmailRegistered(req)
+		answer := methods.IsEmailRegistered(req)
+
 		sendAnswer(answer.GateId, answer.Sender, &answer)
 		break
 	case models.AUTH_IS_USER_REGISTERED_KEY:
 		req := models.IsUserRegisteredRequest{}
-		log.Println(req.GateId)
+
 		json.Unmarshal(data.Value, &req)
-		answer := isUserRegistered(req)
+		answer := methods.IsUserRegistered(req)
+
 		sendAnswer(answer.GateId, answer.Sender, &answer)
 		break
-		case models.AUTH_ISREGISTERED_KEY:
+	case models.AUTH_ISREGISTERED_KEY:
 		req := models.IsRegisteredRequest{}
-		log.Println(req.GateId)
+
 		json.Unmarshal(data.Value, &req)
-		answer := isRegistered(req)
+		answer := methods.IsRegistered(req)
+
 		sendAnswer(answer.GateId, answer.Sender, &answer)
 		break
 

@@ -1,6 +1,7 @@
 package main
 
 import (
+	config "github.com/IT108/achieve-auth-go/config"
 	broker "github.com/IT108/achieve-broker-go"
 	db "github.com/IT108/achieve-db-go"
 	"log"
@@ -25,7 +26,7 @@ func main() {
 	db.ConfigureFromEnv()
 	broker.ConfigureFromEnv()
 	db.Init()
-	getConfig()
+	config.GetConfig()
 	base := broker.RouterBase{}
 	authRouter := &authRouter{base}
 	broker.AssignRouter(broker.RouterInterface(authRouter))

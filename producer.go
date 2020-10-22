@@ -6,6 +6,9 @@ import (
 )
 
 func sendAnswer(gateId string, clientId string, ans interface{}) {
+	if gateId == "" || clientId == "" {
+		return
+	}
 	result, _ := json.Marshal(ans)
 	broker.WriteMsg(gateId, clientId, string(result))
 }
