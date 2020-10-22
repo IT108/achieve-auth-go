@@ -16,7 +16,7 @@ func register(request models.RegisterRequest) models.RegisterResponse {
 	}
 	if result.Code != 0 {
 		response.ResponseCode = http.StatusConflict
-		if isEmailRegistered(request.Email) {
+		if isEmail(request.Email) {
 			response.Error = "email already registered"
 			return response
 		} else {
@@ -35,21 +35,50 @@ func isRegistered(request models.IsRegisteredRequest) models.IsRegisteredRespons
 		IsUsernameRegistered: false,
 		Error:                "",
 	}
-	if isEmailRegistered(request.Email) {
+	if isEmail(request.Email) {
 		result.IsEmailRegistered = true
 		result.ResponseCode = http.StatusConflict
 		result.Error = "email or username are already taken"
 	}
-	if isUsernameRegistered(request.Username) {
+	if isUsername(request.Username) {
 		result.IsUsernameRegistered = true
 		result.ResponseCode = http.StatusConflict
 		result.Error = "email or username are already taken"
 	}
-	log.Println(result.Error)
 	return result
 }
 
-func isEmailRegistered(email string) bool {
+func isEmailRegistered(request models.IsEmailRegisteredRequest) models.IsEmailResponse {
+	result := models.IsEmailResponse{
+		Request:           request.Request,
+		ResponseCode:      http.StatusOK,
+		IsEmailRegistered: false,
+		Error:             "",
+	}
+	if isEmail(request.Email) {
+		result.ResponseCode = http.StatusConflict
+		result.Error = "email already taken"
+		result.IsEmailRegistered = true
+	}
+	return result
+}
+
+func isUserRegistered(request models.IsUserRegisteredRequest) models.IsUserRegisteredResponse {
+	result := models.IsUserRegisteredResponse{
+		Request:              request.Request,
+		ResponseCode:         http.StatusOK,
+		IsUsernameRegistered: false,
+		Error:                "",
+	}
+	if isUsername(request.Username) {
+		result.ResponseCode = http.StatusConflict
+		result.Error = "username already taken"
+		result.IsUsernameRegistered = true
+	}
+	return result
+}
+
+func isEmail(email string) bool {
 	result := db.Select(tarantoolAuthSpace, "primary", email).Data
 	if len(result) != 0 {
 		return true
@@ -57,7 +86,7 @@ func isEmailRegistered(email string) bool {
 	return false
 }
 
-func isUsernameRegistered(username string) bool {
+func isUsername(username string) bool {
 	result := db.Select(tarantoolAuthSpace, "secondary", username).Data
 	if len(result) != 0 {
 		return true

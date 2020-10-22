@@ -4,6 +4,10 @@ github.com/IT108/achieve-db-go v0.0.0-20201005203109-4dbc60b0d7e3 h1:NEmW+APh9Qg
 github.com/IT108/achieve-db-go v0.0.0-20201005203109-4dbc60b0d7e3/go.mod h1:7EkhZmZMsbQgneXQ64rYgrbX8umD14jNpLHyL7DkLqk=
 github.com/IT108/achieve-models-go v0.1.4 h1:hZhSZx6udxo1qC4AKO6RfVjtsnAeO3zV5Cj58mwsGj4=
 github.com/IT108/achieve-models-go v0.1.4/go.mod h1:rNHOvBvLjV/sZgrKAmUmeYH/OBSGWPnDhKj5sBmsiE0=
+github.com/IT108/achieve-models-go v0.1.5 h1:O97MWnl2bCu4ERflDNaM3n8WcNf4s85jX5VGFmfVlUU=
+github.com/IT108/achieve-models-go v0.1.5/go.mod h1:rNHOvBvLjV/sZgrKAmUmeYH/OBSGWPnDhKj5sBmsiE0=
+github.com/IT108/achieve-models-go v0.1.6 h1:WcxXkSoHUTJ8RkkRoV3p3TQm46iPv2MvsZFg6hSKWVI=
+github.com/IT108/achieve-models-go v0.1.6/go.mod h1:rNHOvBvLjV/sZgrKAmUmeYH/OBSGWPnDhKj5sBmsiE0=
 github.com/confluentinc/confluent-kafka-go v1.4.2 h1:13EK9RTujF7lVkvHQ5Hbu6bM+Yfrq8L0MkJNnjHSd4Q=
 github.com/confluentinc/confluent-kafka-go v1.4.2/go.mod h1:u2zNLny2xq+5rWeTQjFHbDzzNuba4P1vo31r9r4uAdg=
 github.com/golang/protobuf v1.3.1 h1:YF8+flBXS5eO826T4nzqPrxfhQThhXl0YzfuUPu4SBg=

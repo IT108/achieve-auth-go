@@ -33,13 +33,27 @@ func (receiver *authRouter) RunAction(data *kafka.Message) {
 		answer := authorize(req)
 		sendAnswer(answer.GateId, answer.Sender, &answer)
 		break
-	case models.AUTH_ISREGISTERED_KEY:
+	case models.AUTH_IS_EMAIL_REGISTERED_KEY:
+		req := models.IsEmailRegisteredRequest{}
+		json.Unmarshal(data.Value, &req)
+		answer := isEmailRegistered(req)
+		sendAnswer(answer.GateId, answer.Sender, &answer)
+		break
+	case models.AUTH_IS_USER_REGISTERED_KEY:
+		req := models.IsUserRegisteredRequest{}
+		log.Println(req.GateId)
+		json.Unmarshal(data.Value, &req)
+		answer := isUserRegistered(req)
+		sendAnswer(answer.GateId, answer.Sender, &answer)
+		break
+		case models.AUTH_ISREGISTERED_KEY:
 		req := models.IsRegisteredRequest{}
 		log.Println(req.GateId)
 		json.Unmarshal(data.Value, &req)
 		answer := isRegistered(req)
 		sendAnswer(answer.GateId, answer.Sender, &answer)
 		break
+
 	default:
 		return
 	}
