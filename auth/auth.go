@@ -42,7 +42,7 @@ func Authenticate(username string, password string) (ok bool, err string) {
 		}
 	}
 
-	ok, err = false, "Incorrect password"
+	ok, err = false, "Incorrect username or password"
 	return ok, err
 }
 

@@ -1,17 +1,17 @@
 package methods
 
 import (
-	auth "github.com/IT108/achieve-auth-go/auth"
-	models "github.com/IT108/achieve-models-go"
+	"github.com/IT108/achieve-auth-go/auth"
+	auth_models "github.com/IT108/achieve-models-go/auth"
 	"log"
 	"net/http"
 )
 
-func Register(request models.RegisterRequest) models.RegisterResponse {
+func Register(request auth_models.RegisterRequest) auth_models.RegisterResponse {
 
 	ok, err := auth.Register(request.Username, request.Email, request.Password)
 
-	response := models.RegisterResponse{
+	response := auth_models.RegisterResponse{
 		Request:      request.Request,
 		ResponseCode: http.StatusOK,
 	}
@@ -24,10 +24,10 @@ func Register(request models.RegisterRequest) models.RegisterResponse {
 	return response
 }
 
-func Authenticate(request models.AuthenticateRequest) models.AuthenticateResponse {
+func Authenticate(request auth_models.AuthenticateRequest) auth_models.AuthenticateResponse {
 	ok, err := auth.Authenticate(request.Username, request.Password)
 
-	response := models.AuthenticateResponse{
+	response := auth_models.AuthenticateResponse{
 		Request:      request.Request,
 		ResponseCode: http.StatusOK,
 	}
@@ -41,10 +41,10 @@ func Authenticate(request models.AuthenticateRequest) models.AuthenticateRespons
 	return response
 }
 
-func Authorize(request models.AuthorizeRequest) models.AuthorizeResponse {
+func Authorize(request auth_models.AuthorizeRequest) auth_models.AuthorizeResponse {
 	ok, groups, err := auth.Authorize(request.User)
 
-	response := models.AuthorizeResponse{
+	response := auth_models.AuthorizeResponse{
 		Request:      request.Request,
 		ResponseCode: http.StatusOK,
 		Roles:        nil,
@@ -57,5 +57,45 @@ func Authorize(request models.AuthorizeRequest) models.AuthorizeResponse {
 		return response
 	}
 	response.Roles = groups
+	return response
+}
+
+func SignIn(request auth_models.SigninRequest) auth_models.SigninResponse {
+	ok, err := auth.Authenticate(request.Username, request.Password)
+
+	response := auth_models.SigninResponse{
+		Request:      request.Request,
+		ResponseCode: http.StatusOK,
+		Error:        "",
+		Token:        auth_models.AuthToken{},
+	}
+
+	if !ok {
+		response.ResponseCode = http.StatusUnauthorized
+		response.Error = err
+		return response
+	}
+	username := request.Username
+	response.User = username
+
+	ok, groups, err := auth.Authorize(username)
+
+	if !ok {
+		response.ResponseCode = http.StatusConflict
+		response.Error = err
+		return response
+	}
+
+	log.Println(groups)
+	//TODO: custom claims
+
+	ok, token, err := auth.GenerateToken(username)
+	if !ok {
+		response.Error = err
+		response.ResponseCode = http.StatusInternalServerError
+		return response
+	}
+
+	response.Token = token
 	return response
 }

@@ -2,12 +2,12 @@ package methods
 
 import (
 	auth "github.com/IT108/achieve-auth-go/auth"
-	models "github.com/IT108/achieve-models-go"
+	auth2 "github.com/IT108/achieve-models-go/auth"
 	"net/http"
 )
 
-func IsRegistered(request models.IsRegisteredRequest) models.IsRegisteredResponse {
-	response := models.IsRegisteredResponse{
+func IsRegistered(request auth2.IsRegisteredRequest) auth2.IsRegisteredResponse {
+	response := auth2.IsRegisteredResponse{
 		Request:              request.Request,
 		ResponseCode:         http.StatusOK,
 		IsEmailRegistered:    false,
@@ -36,8 +36,8 @@ func IsRegistered(request models.IsRegisteredRequest) models.IsRegisteredRespons
 	return response
 }
 
-func IsEmailRegistered(request models.IsEmailRegisteredRequest) models.IsEmailResponse {
-	result := models.IsEmailResponse{
+func IsEmailRegistered(request auth2.IsEmailRegisteredRequest) auth2.IsEmailResponse {
+	result := auth2.IsEmailResponse{
 		Request:           request.Request,
 		ResponseCode:      http.StatusOK,
 		IsEmailRegistered: false,
@@ -54,8 +54,8 @@ func IsEmailRegistered(request models.IsEmailRegisteredRequest) models.IsEmailRe
 	return result
 }
 
-func IsUserRegistered(request models.IsUserRegisteredRequest) models.IsUserRegisteredResponse {
-	result := models.IsUserRegisteredResponse{
+func IsUserRegistered(request auth2.IsUserRegisteredRequest) auth2.IsUserRegisteredResponse {
+	result := auth2.IsUserRegisteredResponse{
 		Request:              request.Request,
 		ResponseCode:         http.StatusOK,
 		IsUsernameRegistered: false,
