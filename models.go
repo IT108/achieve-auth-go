@@ -39,14 +39,6 @@ func (receiver *authRouter) RunAction(data *kafka.Message) {
 
 		sendAnswer(answer.GateId, answer.Sender, &answer)
 		break
-	case auth.AUTH_IS_EMAIL_REGISTERED_KEY:
-		req := auth.IsEmailRegisteredRequest{}
-
-		json.Unmarshal(data.Value, &req)
-		answer := methods.IsEmailRegistered(req)
-
-		sendAnswer(answer.GateId, answer.Sender, &answer)
-		break
 	case auth.AUTH_IS_USER_REGISTERED_KEY:
 		req := auth.IsUserRegisteredRequest{}
 
@@ -60,14 +52,6 @@ func (receiver *authRouter) RunAction(data *kafka.Message) {
 
 		json.Unmarshal(data.Value, &req)
 		answer := methods.IsRegistered(req)
-
-		sendAnswer(answer.GateId, answer.Sender, &answer)
-		break
-	case auth.AUTH_SIGNIN_KEY:
-		req := auth.SigninRequest{}
-
-		json.Unmarshal(data.Value, &req)
-		answer := methods.SignIn(req)
 
 		sendAnswer(answer.GateId, answer.Sender, &answer)
 		break

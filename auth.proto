@@ -1,0 +1,27 @@
+syntax = "proto3";
+package auth;
+
+import "google/protobuf/timestamp.proto";
+
+service AuthService {
+  rpc SignIn(SignInRequest) returns (Token) {}
+  rpc IsEmailRegistered(IsEmailRequest) returns (IsEmailResponse) {}
+}
+
+message SignInRequest {
+  string Username = 1;
+  string Password = 2;
+}
+
+message Token {
+  string Token = 1;
+  google.protobuf.Timestamp TokenExpiration = 2;
+}
+
+message IsEmailRequest {
+  string Email = 1;
+}
+
+message IsEmailResponse {
+  bool IsEmailRegistered = 1;
+}

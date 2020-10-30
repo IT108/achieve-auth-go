@@ -1,11 +1,17 @@
 package methods
 
 import (
+	"context"
+	"errors"
 	"github.com/IT108/achieve-auth-go/auth"
 	auth_models "github.com/IT108/achieve-models-go/auth"
+	"github.com/golang/protobuf/ptypes"
 	"log"
 	"net/http"
 )
+
+type Server struct {
+}
 
 func Register(request auth_models.RegisterRequest) auth_models.RegisterResponse {
 
@@ -60,30 +66,26 @@ func Authorize(request auth_models.AuthorizeRequest) auth_models.AuthorizeRespon
 	return response
 }
 
-func SignIn(request auth_models.SigninRequest) auth_models.SigninResponse {
+
+func (s *Server) SignIn(ctx context.Context, request *auth.SignInRequest) (*auth.Token, error) {
 	ok, err := auth.Authenticate(request.Username, request.Password)
 
-	response := auth_models.SigninResponse{
-		Request:      request.Request,
-		ResponseCode: http.StatusOK,
-		Error:        "",
-		Token:        auth_models.AuthToken{},
+	response := auth.Token{
+		Token:           "",
+		TokenExpiration: nil,
 	}
 
 	if !ok {
-		response.ResponseCode = http.StatusUnauthorized
-		response.Error = err
-		return response
+		return &response, errors.New(err)
 	}
+
 	username := request.Username
-	response.User = username
 
 	ok, groups, err := auth.Authorize(username)
 
 	if !ok {
-		response.ResponseCode = http.StatusConflict
-		response.Error = err
-		return response
+
+		return &response, errors.New(err)
 	}
 
 	log.Println(groups)
@@ -91,11 +93,10 @@ func SignIn(request auth_models.SigninRequest) auth_models.SigninResponse {
 
 	ok, token, err := auth.GenerateToken(username)
 	if !ok {
-		response.Error = err
-		response.ResponseCode = http.StatusInternalServerError
-		return response
+		return &response, errors.New(err)
 	}
 
-	response.Token = token
-	return response
+	response.Token = token.TokenString
+	response.TokenExpiration, _ = ptypes.TimestampProto(token.ExpirationTime)
+	return &response, nil
 }

@@ -6,6 +6,7 @@ import (
 	"log"
 )
 
+
 func Register(username string, email string, password string) (ok bool, err string) {
 	ok, err = true, ""
 

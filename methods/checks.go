@@ -1,8 +1,11 @@
 package methods
 
 import (
+	"context"
+	"errors"
 	auth "github.com/IT108/achieve-auth-go/auth"
 	auth2 "github.com/IT108/achieve-models-go/auth"
+	"log"
 	"net/http"
 )
 
@@ -36,22 +39,20 @@ func IsRegistered(request auth2.IsRegisteredRequest) auth2.IsRegisteredResponse 
 	return response
 }
 
-func IsEmailRegistered(request auth2.IsEmailRegisteredRequest) auth2.IsEmailResponse {
-	result := auth2.IsEmailResponse{
-		Request:           request.Request,
-		ResponseCode:      http.StatusOK,
+func (s *Server) IsEmailRegistered(ctx context.Context, request *auth.IsEmailRequest) (*auth.IsEmailResponse, error) {
+	log.Print("Is email")
+
+	result := auth.IsEmailResponse{
 		IsEmailRegistered: false,
-		Error:             "",
 	}
 
-	ok, err := auth.IsEmailAvailable(request.Email)
+	ok, _ := auth.IsEmailAvailable(request.Email)
 	if !ok {
-		result.ResponseCode = http.StatusConflict
-		result.Error = err
 		result.IsEmailRegistered = true
+		return &result, errors.New("email already registered")
 	}
 
-	return result
+	return &result, nil
 }
 
 func IsUserRegistered(request auth2.IsUserRegisteredRequest) auth2.IsUserRegisteredResponse {
