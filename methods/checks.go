@@ -3,46 +3,43 @@ package methods
 import (
 	"context"
 	"errors"
-	auth "github.com/IT108/achieve-auth-go/auth"
-	auth2 "github.com/IT108/achieve-models-go/auth"
+	"github.com/IT108/achieve-auth-go/auth"
+	proto "github.com/IT108/achieve-auth-go/auth-proto"
 	"log"
-	"net/http"
 )
 
-func IsRegistered(request auth2.IsRegisteredRequest) auth2.IsRegisteredResponse {
-	response := auth2.IsRegisteredResponse{
-		Request:              request.Request,
-		ResponseCode:         http.StatusOK,
+
+func (*Server) IsRegistered(ctx context.Context, request *proto.IsRegisteredRequest) (*proto.IsRegisteredResponse, error) {
+	errorMessage := ""
+
+	response := &proto.IsRegisteredResponse{
+		IsUserRegistered:     false,
 		IsEmailRegistered:    false,
-		IsUsernameRegistered: false,
-		Error:                "",
 	}
 
 	email, err := auth.IsEmailAvailable(request.Email)
 	if !email {
 		response.IsEmailRegistered = true
-		response.ResponseCode = http.StatusConflict
-		response.Error = err
+		errorMessage = err
 	}
 
 	username, err := auth.IsUsernameAvailable(request.Email)
 	if !username {
-		response.IsUsernameRegistered = true
-		response.ResponseCode = http.StatusConflict
-		response.Error = err
+		response.IsUserRegistered = true
+		errorMessage = err
 	}
 
 	if !username && !email {
-		response.Error = "Email and username are registered"
+		errorMessage = "Email and username are registered"
 	}
 
-	return response
+	return response, errors.New(errorMessage)
 }
 
-func (s *Server) IsEmailRegistered(ctx context.Context, request *auth.IsEmailRequest) (*auth.IsEmailResponse, error) {
+func (s *Server) IsEmailRegistered(ctx context.Context, request *proto.IsEmailRequest) (*proto.IsEmailResponse, error) {
 	log.Print("Is email")
 
-	result := auth.IsEmailResponse{
+	result := proto.IsEmailResponse{
 		IsEmailRegistered: false,
 	}
 
@@ -55,20 +52,16 @@ func (s *Server) IsEmailRegistered(ctx context.Context, request *auth.IsEmailReq
 	return &result, nil
 }
 
-func IsUserRegistered(request auth2.IsUserRegisteredRequest) auth2.IsUserRegisteredResponse {
-	result := auth2.IsUserRegisteredResponse{
-		Request:              request.Request,
-		ResponseCode:         http.StatusOK,
-		IsUsernameRegistered: false,
-		Error:                "",
+func (*Server) IsUserRegistered(ctx context.Context, request *proto.IsUserRequest) (*proto.IsUserResponse, error) {
+	result := &proto.IsUserResponse{
+		IsUserRegistered: false,
 	}
 
 	ok, err := auth.IsUsernameAvailable(request.Username)
 	if !ok {
-		result.ResponseCode = http.StatusConflict
-		result.Error = err
-		result.IsUsernameRegistered = true
+		result.IsUserRegistered = true
+		return result, errors.New(err)
 	}
 
-	return result
+	return result, nil
 }

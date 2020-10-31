@@ -1,11 +1,14 @@
 syntax = "proto3";
-package auth;
+package auth_proto;
 
 import "google/protobuf/timestamp.proto";
 
 service AuthService {
-  rpc SignIn(SignInRequest) returns (Token) {}
   rpc IsEmailRegistered(IsEmailRequest) returns (IsEmailResponse) {}
+  rpc IsUserRegistered(IsUserRequest) returns (IsUserResponse) {}
+  rpc IsRegistered(IsRegisteredRequest) returns (IsRegisteredResponse) {}
+  rpc SignIn(SignInRequest) returns (Token) {}
+  rpc Register(RegisterRequest) returns (Response) {}
 }
 
 message SignInRequest {
@@ -18,10 +21,39 @@ message Token {
   google.protobuf.Timestamp TokenExpiration = 2;
 }
 
+message RegisterRequest {
+  string Email = 1;
+  string Username = 2;
+  string Password = 3;
+}
+
+message Response {
+  int32 status = 1;
+}
+
 message IsEmailRequest {
   string Email = 1;
 }
 
 message IsEmailResponse {
   bool IsEmailRegistered = 1;
+}
+
+message IsUserRequest {
+  string Username = 1;
+}
+
+message IsUserResponse {
+  bool IsUserRegistered = 1;
+}
+
+message IsRegisteredRequest {
+  string Username = 1;
+  string Email = 2;
+
+}
+
+message IsRegisteredResponse {
+  bool IsUserRegistered = 1;
+  bool IsEmailRegistered = 2;
 }

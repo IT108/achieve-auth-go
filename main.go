@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/IT108/achieve-auth-go/auth"
+	proto "github.com/IT108/achieve-auth-go/auth-proto"
 	config "github.com/IT108/achieve-auth-go/config"
 	"github.com/IT108/achieve-auth-go/methods"
 	broker "github.com/IT108/achieve-broker-go"
@@ -53,7 +53,7 @@ func main() {
 
 	grpcServer := grpc.NewServer()
 
-	auth.RegisterAuthServiceServer(grpcServer, &s)
+	proto.RegisterAuthServiceServer(grpcServer, &s)
 
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %s", err)

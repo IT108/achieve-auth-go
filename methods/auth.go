@@ -4,73 +4,36 @@ import (
 	"context"
 	"errors"
 	"github.com/IT108/achieve-auth-go/auth"
-	auth_models "github.com/IT108/achieve-models-go/auth"
+	proto "github.com/IT108/achieve-auth-go/auth-proto"
 	"github.com/golang/protobuf/ptypes"
 	"log"
-	"net/http"
 )
 
 type Server struct {
 }
 
-func Register(request auth_models.RegisterRequest) auth_models.RegisterResponse {
 
+
+func (s *Server) Register(ctx context.Context, request *proto.RegisterRequest) (*proto.Response, error) {
+	errorMessage := ""
 	ok, err := auth.Register(request.Username, request.Email, request.Password)
 
-	response := auth_models.RegisterResponse{
-		Request:      request.Request,
-		ResponseCode: http.StatusOK,
+	response := &proto.Response{
+		Status: 200,
 	}
 
 	if !ok {
-		response.ResponseCode = http.StatusConflict
-		response.Error = err
+		response.Status = 500
+		errorMessage = err
 	}
 
-	return response
+	return response, errors.New(errorMessage)
 }
 
-func Authenticate(request auth_models.AuthenticateRequest) auth_models.AuthenticateResponse {
+func (s *Server) SignIn(ctx context.Context, request *proto.SignInRequest) (*proto.Token, error) {
 	ok, err := auth.Authenticate(request.Username, request.Password)
 
-	response := auth_models.AuthenticateResponse{
-		Request:      request.Request,
-		ResponseCode: http.StatusOK,
-	}
-
-	if !ok {
-		response.ResponseCode = http.StatusForbidden
-		response.Error = err
-	}
-
-	log.Println(response.ResponseCode)
-	return response
-}
-
-func Authorize(request auth_models.AuthorizeRequest) auth_models.AuthorizeResponse {
-	ok, groups, err := auth.Authorize(request.User)
-
-	response := auth_models.AuthorizeResponse{
-		Request:      request.Request,
-		ResponseCode: http.StatusOK,
-		Roles:        nil,
-		Error:        "",
-	}
-
-	if !ok {
-		response.ResponseCode = http.StatusConflict
-		response.Error = err
-		return response
-	}
-	response.Roles = groups
-	return response
-}
-
-
-func (s *Server) SignIn(ctx context.Context, request *auth.SignInRequest) (*auth.Token, error) {
-	ok, err := auth.Authenticate(request.Username, request.Password)
-
-	response := auth.Token{
+	response := proto.Token{
 		Token:           "",
 		TokenExpiration: nil,
 	}
